@@ -11,7 +11,7 @@ public class Archivo
         this.extension = ext;
     }
 
-    public int NroRegistro { get => nroRegistro; set => nroRegistro = value; }
-    public string Nombre { get => nombre; set => nombre = value; }
-    public string Extension { get => extension; set => extension = value; }
+    public int NroRegistro { get => nroRegistro; }
+    public string Nombre { get => nombre; }
+    public string Extension { get => extension; }
 }
