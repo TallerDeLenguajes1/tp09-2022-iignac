@@ -34,16 +34,26 @@ void crearJson()
 {
     FileStream fs = new FileStream(archivoJson, FileMode.Create);
     StreamWriter sw = new StreamWriter(fs);
-    foreach (Archivo archivoX in listaArchivosObj)
-    {
-        sw.WriteLine(serializarArchivo(archivoX));
-    }
+    sw.WriteLine(serializarLista());
     sw.Close();
     fs.Close();
 }
 
-string serializarArchivo(Archivo archivo)
+string serializarLista()
 {
-    string stringJson = JsonSerializer.Serialize(archivo);
+    string stringJson = JsonSerializer.Serialize(listaArchivosObj);
     return stringJson;
 }
+
+// serializar por cada elemento de la lista (da un error en el json):
+// void crearJson()
+// {
+//     FileStream fs = new FileStream(archivoJson, FileMode.Create);
+//     StreamWriter sw = new StreamWriter(fs);
+//     foreach (Archivo archivoX in listaArchivosObj)
+//     {
+//         sw.WriteLine(serializarArchivo(archivoX));
+//     }
+//     sw.Close();
+//     fs.Close();
+// }
