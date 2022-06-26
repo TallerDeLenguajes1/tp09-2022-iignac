@@ -32,11 +32,11 @@ using (FileStream fs = new FileStream(archivojson, FileMode.Create))
 //leer json
 using (FileStream fs = new FileStream(archivojson, FileMode.Open) )
 {
-    List<Producto>? listaDeserializada;
+    //List<Producto>? listaDeserializada;
     using (StreamReader sr = new StreamReader(fs))
     {
         string datosLeidos = sr.ReadToEnd();
-        listaDeserializada = JsonSerializer.Deserialize<List<Producto>>(datosLeidos);
+        var listaDeserializada = JsonSerializer.Deserialize<List<Producto>>(datosLeidos);
         int i = 0;
         foreach (Producto productoX in listaDeserializada)
         {
