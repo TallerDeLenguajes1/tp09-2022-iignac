@@ -1,59 +1,48 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-// Console.WriteLine("Ingrese la ruta de una carpeta:");
-// string path = Console.ReadLine();
-
-string path = Directory.GetCurrentDirectory();
-string archivoJson = path + @"\index.json";
- 
-List<string> listaCarpetas = Directory.GetDirectories(path).ToList(); 
-List<string> listaArchivos = Directory.GetFiles(path).ToList();
-List<Archivo> listaArchivosObj = new List<Archivo>();
-
-Console.WriteLine("----- Carpetas -----");
-foreach (string carpetaX in listaCarpetas)
+int N;
+do
 {
-    Console.WriteLine(Path.GetFileNameWithoutExtension(carpetaX));
+    Console.WriteLine("==> Ingrese la cantidad de productos:");
+    N = Convert.ToInt32(Console.ReadLine());
+} while (N < 1);
+
+List<Producto> listaProductos = new List<Producto>();
+for (int i = 0; i < N; i++)
+{
+    Producto nuevoProducto = new Producto();
+    listaProductos.Add(nuevoProducto);
 }
 
-int i = 0; 
-Console.WriteLine("\n----- Archivos -----");
-foreach (string archivoX in listaArchivos)
-{
-    i++;
-    FileInfo archivoXinfo = new FileInfo(archivoX);
-    Archivo nuevoArchivo = new Archivo(i, Path.GetFileNameWithoutExtension(archivoX), archivoXinfo.Extension);
-    listaArchivosObj.Add(nuevoArchivo);
-    Console.WriteLine(Path.GetFileNameWithoutExtension(archivoX));
-} 
-crearJson();
 
+string ruta = Directory.GetCurrentDirectory(); // ruta donde se guardará el archivo json
+string archivojson = ruta + @"/productos.json";
 
-void crearJson()
+//guardar en json
+using (FileStream fs = new FileStream(archivojson, FileMode.Create))
 {
-    FileStream fs = new FileStream(archivoJson, FileMode.Create);
-    StreamWriter sw = new StreamWriter(fs);
-    sw.WriteLine(serializarLista());
-    sw.Close();
-    fs.Close();
+    using (StreamWriter sw = new StreamWriter(fs))
+    {
+        string stringJson = JsonSerializer.Serialize(listaProductos);
+        sw.WriteLine(stringJson);
+    }
 }
 
-string serializarLista()
+//leer json
+using (FileStream fs = new FileStream(archivojson, FileMode.Open) )
 {
-    string stringJson = JsonSerializer.Serialize(listaArchivosObj);
-    return stringJson;
+    List<Producto>? listaDeserializada;
+    using (StreamReader sr = new StreamReader(fs))
+    {
+        string datosLeidos = sr.ReadToEnd();
+        listaDeserializada = JsonSerializer.Deserialize<List<Producto>>(datosLeidos);
+        int i = 0;
+        foreach (Producto productoX in listaDeserializada)
+        {
+            i++;
+            Console.WriteLine($"\n### PRODUCTO {i} ###");
+            productoX.mostrarProducto();
+        }
+    }
 }
-
-// serializar por cada elemento de la lista (da un error en el json):
-// void crearJson()
-// {
-//     FileStream fs = new FileStream(archivoJson, FileMode.Create);
-//     StreamWriter sw = new StreamWriter(fs);
-//     foreach (Archivo archivoX in listaArchivosObj)
-//     {
-//         sw.WriteLine(serializarArchivo(archivoX));
-//     }
-//     sw.Close();
-//     fs.Close();
-// }
