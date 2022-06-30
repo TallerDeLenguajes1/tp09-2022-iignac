@@ -16,11 +16,11 @@ for (int i = 0; i < N; i++)
 }
 
 
-string ruta = Directory.GetCurrentDirectory(); // ruta donde se guardará el archivo json
+string ruta = Directory.GetCurrentDirectory(); //ruta donde se guardará el archivo json
 string archivojson = ruta + @"/productos.json";
 
 //guardar en json
-using (FileStream fs = new FileStream(archivojson, FileMode.Create))
+using (FileStream fs = new FileStream(archivojson, FileMode.Create)) //using evita usar Close()
 {
     using (StreamWriter sw = new StreamWriter(fs))
     {
@@ -36,13 +36,13 @@ using (FileStream fs = new FileStream(archivojson, FileMode.Open) )
     using (StreamReader sr = new StreamReader(fs))
     {
         string datosLeidos = sr.ReadToEnd();
-        var listaDeserializada = JsonSerializer.Deserialize<List<Producto>>(datosLeidos);
+        var listaDeserializada = JsonSerializer.Deserialize<List<Producto>>(datosLeidos); //Root myDeserializedClass = JsonSerializer.Deserialize<List<Root>>(myJsonResponse);
         int i = 0;
-        foreach (Producto productoX in listaDeserializada)
+        foreach (Producto unProducto in listaDeserializada)
         {
             i++;
             Console.WriteLine($"\n### PRODUCTO {i} ###");
-            productoX.mostrarProducto();
+            unProducto.mostrarProducto();
         }
     }
 }
