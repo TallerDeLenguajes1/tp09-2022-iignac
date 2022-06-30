@@ -32,18 +32,30 @@ crearJson();
 
 void crearJson()
 {
-    FileStream fs = new FileStream(archivoJson, FileMode.Create);
-    StreamWriter sw = new StreamWriter(fs);
-    sw.WriteLine(serializarLista());
+    FileStream fs = new FileStream(archivoJson, FileMode.Create); //creo el archivo json (si existe se sobreescribe con uno nuevo)
+    StreamWriter sw = new StreamWriter(fs); //tomo control del archivo json para poder escribirlo
+    sw.WriteLine(serializarLista()); // escribo el string en el archivo json
     sw.Close();
     fs.Close();
 }
 
 string serializarLista()
 {
-    string stringJson = JsonSerializer.Serialize(listaArchivosObj);
+    string stringJson = JsonSerializer.Serialize(listaArchivosObj); //serializar: convertir una "lista de objetos"  o "un objeto" a un "string"
     return stringJson;
 }
+
+
+// crear Json usando "using": evita usar Close()
+// using (FileStream fs = new FileStream(archivoJson, FileMode.Create))
+// {
+//     using (StreamWriter sw = new StreamWriter(fs))
+//     {
+//         string stringJson = JsonSerializer.Serialize(listaArchivosObj);
+//         sw.WriteLine(stringJson);
+//     }
+// }
+
 
 // serializar por cada elemento de la lista (da un error en el json):
 // void crearJson()
