@@ -23,8 +23,8 @@ for (int i = 0; i < N; i++)
 string ruta = Directory.GetCurrentDirectory(); //ruta donde se guardará el archivo json
 string archivoJson = ruta + @"/productos.json";
 guardarEnJson();
-List<Producto> listaProdDeserealizada = leerJson();
-mostrarProductos(listaProdDeserealizada);
+List<Producto> listaProdDeserializada = leerJson();
+mostrarProductos(listaProdDeserializada);
 
 
 // ---- FUNCIONES ----
@@ -48,9 +48,9 @@ List<Producto> leerJson()
         using (StreamReader sr = new StreamReader(fs))
         {
             string stringJson = sr.ReadToEnd();
-            List<Producto> listaDeserealizada = JsonSerializer.Deserialize<List<Producto>>(stringJson);
+            List<Producto> listaDeserializada = JsonSerializer.Deserialize<List<Producto>>(stringJson);
             //var listaDeserializada = ...
-            return listaDeserealizada;
+            return listaDeserializada;
         }
     }
 }
@@ -67,7 +67,7 @@ void mostrarProductos(List<Producto>lista)
 }
 
 // serializar: convertir un objeto (o una lista de objetos) en un texto (string) en formato json
-// deresializar: guardar los datos del string en formato json en un objeto (o en una lista de objetos) de la clase correspondiente. Se debe definir la clase con el mismo formato que tiene el json
+// deserializar: guardar los datos del string en formato json en un objeto (o en una lista de objetos) de la clase correspondiente. Se debe definir la clase con el mismo formato que tiene el json
 
 // GUARDAR EN JSON usando Close():
 // void guardarEnJson()
@@ -87,9 +87,8 @@ void mostrarProductos(List<Producto>lista)
 //     FileStream fs = new FileStream(archivoJson, FileMode.Open);
 //     StreamReader sr = new StreamReader(fs);
 //     string stringJson = sr.ReadToEnd();
-//     List<Producto> listaDeserealizada = JsonSerializer.Deserialize<List<Producto>>(stringJson);
+//     List<Producto> listaDeserializada = JsonSerializer.Deserialize<List<Producto>>(stringJson);
 //     sr.Close();
 //     fs.Close();
-//     return listaDeserealizada;
+//     return listaDeserializada;
 // }
-

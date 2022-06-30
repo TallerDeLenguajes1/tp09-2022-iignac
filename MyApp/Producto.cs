@@ -3,7 +3,7 @@ public class Producto
     private string nombre;
     private DateTime fechaVencimiento;
     private float precio; //entre 1000 y 5000
-    string peso;
+    private string peso;
 
     public Producto(string nombre, DateTime fechaVencimiento, float precio, string peso)
     {
