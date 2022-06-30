@@ -1,48 +1,95 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
+string[] nombresProductos = {"arroz", "queso", "jamon", "dulce de leche", "fideo", "salame"};
+string[] pesosProductos = {"1kg", "1/2kg", "1/4kg"};
+Random rnd = new Random();
+Producto nuevoProducto;
+List<Producto> listaProductos = new List<Producto>();
 int N;
+
 do
 {
     Console.WriteLine("==> Ingrese la cantidad de productos:");
     N = Convert.ToInt32(Console.ReadLine());
 } while (N < 1);
 
-List<Producto> listaProductos = new List<Producto>();
 for (int i = 0; i < N; i++)
 {
-    Producto nuevoProducto = new Producto();
+    nuevoProducto = new Producto(nombresProductos[rnd.Next(6)], new DateTime(rnd.Next(2023,2025), rnd.Next(1,13), rnd.Next(1,31)), rnd.Next(1000,5001), pesosProductos[rnd.Next(3)]);
     listaProductos.Add(nuevoProducto);
 }
 
-
 string ruta = Directory.GetCurrentDirectory(); //ruta donde se guardará el archivo json
-string archivojson = ruta + @"/productos.json";
+string archivoJson = ruta + @"/productos.json";
+guardarEnJson();
+List<Producto> listaProdDeserealizada = leerJson();
+mostrarProductos(listaProdDeserealizada);
 
-//guardar en json
-using (FileStream fs = new FileStream(archivojson, FileMode.Create)) //using evita usar Close()
-{
-    using (StreamWriter sw = new StreamWriter(fs))
-    {
-        string stringJson = JsonSerializer.Serialize(listaProductos);
-        sw.WriteLine(stringJson);
-    }
-}
 
-//leer json
-using (FileStream fs = new FileStream(archivojson, FileMode.Open) )
+// ---- FUNCIONES ----
+
+void guardarEnJson()
 {
-    //List<Producto>? listaDeserializada;
-    using (StreamReader sr = new StreamReader(fs))
+    using (FileStream fs = new FileStream(archivoJson, FileMode.Create)) //using evita usar Close()
     {
-        string datosLeidos = sr.ReadToEnd();
-        var listaDeserializada = JsonSerializer.Deserialize<List<Producto>>(datosLeidos); //Root myDeserializedClass = JsonSerializer.Deserialize<List<Root>>(myJsonResponse);
-        int i = 0;
-        foreach (Producto unProducto in listaDeserializada)
+        using (StreamWriter sw = new StreamWriter(fs))
         {
-            i++;
-            Console.WriteLine($"\n### PRODUCTO {i} ###");
-            unProducto.mostrarProducto();
+            string stringJson = JsonSerializer.Serialize(listaProductos);
+            sw.WriteLine(stringJson);
         }
     }
 }
+
+List<Producto> leerJson()
+{
+    using (FileStream fs = new FileStream(archivoJson, FileMode.Open))
+    {
+        using (StreamReader sr = new StreamReader(fs))
+        {
+            string stringJson = sr.ReadToEnd();
+            List<Producto> listaDeserealizada = JsonSerializer.Deserialize<List<Producto>>(stringJson);
+            //var listaDeserializada = ...
+            return listaDeserealizada;
+        }
+    }
+}
+
+void mostrarProductos(List<Producto>lista)
+{   
+    int i=0;
+    foreach (Producto unProducto in lista)
+    {
+        i++;
+        Console.WriteLine($"\n### PRODUCTO {i} ###");
+        unProducto.mostrarProducto();
+    }
+}
+
+// serializar: convertir un objeto (o una lista de objetos) en un texto (string) en formato json
+// deresializar: guardar los datos del string en formato json en un objeto (o en una lista de objetos) de la clase correspondiente. Se debe definir la clase con el mismo formato que tiene el json
+
+// GUARDAR EN JSON usando Close():
+// void guardarEnJson()
+// {
+//     FileStream fs = new FileStream(archivoJson, FileMode.Create);
+//     StreamWriter sw = new StreamWriter(fs);
+//     string stringJson = JsonSerializer.Serialize(listaProductos);
+//     sw.WriteLine(stringJson);
+//     sw.Close();
+//     fs.Close();
+// }
+//
+
+// LEER JSON usando Close():
+// List<Producto> leerJson()
+// {
+//     FileStream fs = new FileStream(archivoJson, FileMode.Open);
+//     StreamReader sr = new StreamReader(fs);
+//     string stringJson = sr.ReadToEnd();
+//     List<Producto> listaDeserealizada = JsonSerializer.Deserialize<List<Producto>>(stringJson);
+//     sr.Close();
+//     fs.Close();
+//     return listaDeserealizada;
+// }
+
